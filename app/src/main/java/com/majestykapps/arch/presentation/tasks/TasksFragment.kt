@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.majestykapps.arch.DetailActivity
 import com.majestykapps.arch.R
 import com.majestykapps.arch.domain.entity.Task
@@ -56,12 +57,11 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
             errorEvent.observe(viewLifecycleOwner, Observer { throwable ->
                 Log.e(TAG, "errorEvent observed", throwable)
                 //text.text = throwable.localizedMessage
-                // TODO show error
+                showError()
             })
 
             tasks.observe(viewLifecycleOwner, Observer { tasks ->
                 Log.d(TAG, "tasks observed: $tasks")
-                //text.text = tasks.toString()
 
                 list_recycler_view.apply {
                     layoutManager = LinearLayoutManager(activity)
@@ -72,6 +72,16 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
                     }
                 }
             })
+        }
+    }
+
+    private fun showError() {
+        view?.let {
+            Snackbar.make(it, R.string.error_failed_catch_data, Snackbar.LENGTH_LONG)
+                .setAction(R.string.retry) {
+                    viewModel.refresh()
+                }
+                .show()
         }
     }
 

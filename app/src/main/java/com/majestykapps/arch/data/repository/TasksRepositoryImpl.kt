@@ -56,7 +56,8 @@ class TasksRepositoryImpl private constructor(
 
         val observable = if (isCacheDirty) {
             // Try remote data source with fallback to local
-            getAndCacheRemoteTasks().onErrorResumeNext(getAndCacheLocalTasks())
+            getAndCacheLocalTasks().onErrorResumeNext(getAndCacheRemoteTasks())
+            //getAndCacheRemoteTasks().onErrorResumeNext(getAndCacheLocalTasks())
         } else {
             // Try local data source
             getAndCacheLocalTasks()

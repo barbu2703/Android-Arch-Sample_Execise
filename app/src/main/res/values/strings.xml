@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Majestyk Arch</string>
     <string name="task_detail_title">Majestyk Tasks</string>
+    <string name="retry">Retry</string>
+
+    <string name="error_failed_catch_data">Error is occurred while fetching data.</string>
 </resources>
