@@ -9,7 +9,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.majestykapps.arch.DetailActivity
 import com.majestykapps.arch.R
+import com.majestykapps.arch.domain.entity.Task
 import com.majestykapps.arch.presentation.adapter.TaskListAdapter
 import kotlinx.android.synthetic.main.fragment_tasks.swipeRefresh
 import kotlinx.android.synthetic.main.fragment_tasks.list_recycler_view
@@ -63,7 +65,11 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
 
                 list_recycler_view.apply {
                     layoutManager = LinearLayoutManager(activity)
-                    adapter = TaskListAdapter(tasks)
+                    adapter = TaskListAdapter(tasks) { task: Task ->
+                        activity?.let {
+                            DetailActivity.navigateTODetailActivity(it, task)
+                        }
+                    }
                 }
             })
         }

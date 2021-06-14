@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Majestyk Arch</string>
+    <string name="task_detail_title">Majestyk Tasks</string>
 </resources>
