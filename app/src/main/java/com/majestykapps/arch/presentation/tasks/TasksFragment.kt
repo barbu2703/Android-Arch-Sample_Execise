@@ -1,5 +1,6 @@
 package com.majestykapps.arch.presentation.tasks
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -21,6 +22,7 @@ import com.majestykapps.arch.domain.entity.Task
 import com.majestykapps.arch.presentation.adapter.TaskListAdapter
 import com.yalantis.jellytoolbar.listener.JellyListener
 import kotlinx.android.synthetic.main.fragment_tasks.*
+
 
 /**
  * @description     Tasks List Fragment
@@ -73,8 +75,12 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
         })
 
         toolbar.contentView = editText
-
         toolbar.jellyListener = jellyListener
+
+        button_network_check.setOnClickListener {
+            val intent = Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
+            startActivity(intent)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -105,13 +111,23 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
         }
     }
 
+    /**
+     * Update task list
+     *
+     */
     private fun updateTaskList(tasks: List<Task>?) {
-        list_recycler_view.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = tasks?.let {
-                TaskListAdapter(it) { task: Task ->
-                    activity?.let {
-                        DetailActivity.navigateTODetailActivity(it, task)
+        if (tasks.isNullOrEmpty()) {
+            empty_view.visibility = View.VISIBLE
+        } else {
+            empty_view.visibility = View.INVISIBLE
+
+            list_recycler_view.apply {
+                layoutManager = LinearLayoutManager(activity)
+                adapter = tasks?.let {
+                    TaskListAdapter(it) { task: Task ->
+                        activity?.let {
+                            DetailActivity.navigateTODetailActivity(it, task)
+                        }
                     }
                 }
             }
